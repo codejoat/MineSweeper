@@ -1,0 +1,46 @@
+#pragma once
+
+#include "Graphics.h"
+#include "Vei2.h"
+
+class MineField { 
+private:
+	class Tile {
+	public:
+		enum class State {
+			hidden,
+			flagged,
+			revealed
+		};
+	public:
+		void SpawnMine ();
+		bool HasMine () const;
+		void Draw (const Vei2& screen_pos, Graphics& gfx, bool game_over) const;
+		void Reveal ();
+		bool IsRevealed () const;
+		void ToggleFlag ();
+		bool IsFlagged () const;
+		void SetNeighborMineCount (int mine_count);
+	private:
+		State state = State::hidden;
+		bool has_mine = false;
+		int n_neighbor_mines = -1;
+	};
+public:
+	MineField (int n_mines);
+	void Draw (Graphics& gfx) const;
+	RectI GetRect () const;
+	void OnRevealClick (const Vei2& screen_pos);
+	void OnFlagClick (const Vei2& screen_pos);
+private:
+	Tile& TileAt (const Vei2& grid_pos);
+	const Tile& TileAt (const Vei2& grid_pos) const;
+	Vei2 ScreenToGrid (const Vei2& screen_pos);
+	int CountNeighborMines (const Vei2& grid_pos);
+private:
+	static constexpr int width = 20;
+	static constexpr int height = 16;
+	bool game_over = false;
+	Tile field[width * height];
+};
+
