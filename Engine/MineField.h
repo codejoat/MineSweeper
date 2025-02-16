@@ -27,7 +27,7 @@ private:
 		int n_neighbor_mines = -1;
 	};
 public:
-	MineField (int n_mines);
+	MineField (const Vei2& center, int n_mines);
 	void Draw (Graphics& gfx) const;
 	RectI GetRect () const;
 	void OnRevealClick (const Vei2& screen_pos);
@@ -40,6 +40,7 @@ private:
 private:
 	static constexpr int width = 20;
 	static constexpr int height = 16;
+	Vei2 top_left;
 	bool game_over = false;
 	Tile field[width * height];
 };

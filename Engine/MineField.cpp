@@ -81,7 +81,10 @@ void MineField::Tile::SetNeighborMineCount (int mine_count) {
 	n_neighbor_mines = mine_count;
 }
 
-MineField::MineField (int n_mines) {
+MineField::MineField (const Vei2& center, int n_mines)
+	:
+	top_left (center - Vei2 (width * SpriteCodex::tileSize, height * SpriteCodex::tileSize) / 2)
+{
 	assert (n_mines > 0 && n_mines < width * height);
 	std::random_device rd;
 	std::mt19937 rng (rd ());
@@ -108,13 +111,13 @@ void MineField::Draw (Graphics& gfx) const {
 	gfx.DrawRect (GetRect (), SpriteCodex::baseColor);
 	for(Vei2 grid_pos = { 0, 0 }; grid_pos.y < height; ++grid_pos.y) {
 		for(grid_pos.x = 0; grid_pos.x < width; ++grid_pos.x) {
-			TileAt (grid_pos).Draw(grid_pos * SpriteCodex::tileSize, gfx, game_over);
+			TileAt (grid_pos).Draw(top_left + grid_pos * SpriteCodex::tileSize, gfx, game_over);
 		}
 	}
 }
 
 RectI MineField::GetRect () const {
-	return RectI (0, width * SpriteCodex::tileSize, 0, height * SpriteCodex::tileSize);
+	return RectI (top_left, width * SpriteCodex::tileSize, height * SpriteCodex::tileSize);
 }
 
 void MineField::OnRevealClick (const Vei2& screen_pos) {
@@ -151,7 +154,7 @@ const MineField::Tile& MineField::TileAt (const Vei2& grid_pos) const {
 }
 
 Vei2 MineField::ScreenToGrid (const Vei2& screen_pos) {
-	return screen_pos / SpriteCodex::tileSize;
+	return (screen_pos - top_left) / SpriteCodex::tileSize;
 }
 
 int MineField::CountNeighborMines (const Vei2& grid_pos) {
