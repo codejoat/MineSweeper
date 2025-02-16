@@ -1152,3 +1152,33 @@ void SpriteCodex::DrawTileNumber (const Vei2& pos, Graphics& gfx, int num) {
 	case 8: DrawTile8 (pos, gfx); break;
 	}
 }
+
+void SpriteCodex::DrawSmiley (const Vei2& pos, Graphics& gfx) { 
+	gfx.DrawCircle (pos.x, pos.y, 13, Colors::Yellow);
+
+	gfx.PutPixel (pos.x - 4, pos.y - 4, Colors::Black);
+	gfx.PutPixel (pos.x - 5, pos.y - 4, Colors::Black);
+	gfx.PutPixel (pos.x - 4, pos.y - 5, Colors::Black);
+	gfx.PutPixel (pos.x - 5, pos.y - 5, Colors::Black);
+
+	gfx.PutPixel (pos.x + 4, pos.y - 4, Colors::Black);
+	gfx.PutPixel (pos.x + 5, pos.y - 4, Colors::Black);
+	gfx.PutPixel (pos.x + 4, pos.y - 5, Colors::Black);
+	gfx.PutPixel (pos.x + 5, pos.y - 5, Colors::Black);
+
+	gfx.PutPixel (pos.x + 0, pos.y + 8, Colors::Black);
+	gfx.PutPixel (pos.x + 1, pos.y + 8, Colors::Black);
+	gfx.PutPixel (pos.x - 1, pos.y + 8, Colors::Black);
+	gfx.PutPixel (pos.x + 2, pos.y + 8, Colors::Black);
+	gfx.PutPixel (pos.x - 2, pos.y + 8, Colors::Black);
+
+	gfx.PutPixel (pos.x + 3, pos.y + 7, Colors::Black);
+	gfx.PutPixel (pos.x - 3, pos.y + 7, Colors::Black);
+	gfx.PutPixel (pos.x + 4, pos.y + 7, Colors::Black);
+	gfx.PutPixel (pos.x - 4, pos.y + 7, Colors::Black);
+
+	gfx.PutPixel (pos.x + 5, pos.y + 6, Colors::Black);
+	gfx.PutPixel (pos.x - 5, pos.y + 6, Colors::Black);
+	
+
+}

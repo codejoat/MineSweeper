@@ -24,6 +24,7 @@
 #include "Mouse.h"
 #include "Graphics.h"
 #include "MineField.h"
+#include "SpriteCodex.h"
 
 class Game
 {

@@ -32,6 +32,8 @@ public:
 	RectI GetRect () const;
 	void OnRevealClick (const Vei2& screen_pos);
 	void OnFlagClick (const Vei2& screen_pos);
+	bool GameIsWon () const;
+	bool GameIsLost () const;
 private:
 	Tile& TileAt (const Vei2& grid_pos);
 	const Tile& TileAt (const Vei2& grid_pos) const;
@@ -40,7 +42,7 @@ private:
 private:
 	static constexpr int width = 20;
 	static constexpr int height = 16;
-	static constexpr int border_width = 10;
+	static constexpr int border_width = 30;
 	static constexpr Color border_color = Color (192, 192, 192);
 
 	Vei2 top_left;

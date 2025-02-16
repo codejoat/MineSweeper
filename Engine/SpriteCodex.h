@@ -26,4 +26,5 @@ public:
 	static void DrawTileBomb( const Vei2& pos,Graphics& gfx );
 	static void DrawTileBombRed( const Vei2& pos,Graphics& gfx );
 	static void DrawTileNumber (const Vei2& pos, Graphics& gfx, int num);
+	static void DrawSmiley (const Vei2& pos, Graphics& gfx);
 };

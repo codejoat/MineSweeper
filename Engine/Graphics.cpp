@@ -331,6 +331,16 @@ void Graphics::DrawRect( int x0,int y0,int x1,int y1,Color c )
 	}
 }
 
+void Graphics::DrawCircle (int center_x, int center_y, int radius, Color c) {
+	for(int y = center_y - radius; y < center_y + radius; ++y) {
+		for(int x = center_x - radius; x < center_x + radius; ++x) {
+			if(abs (pow (x - center_x, 2)) + abs (pow (y - center_y, 2)) <= pow (radius, 2)) {
+				PutPixel (x, y, c);
+			}
+		}
+	}
+}
+
 
 //////////////////////////////////////////////////
 //           Graphics Exception

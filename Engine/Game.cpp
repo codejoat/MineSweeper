@@ -59,4 +59,8 @@ void Game::UpdateModel()
 void Game::ComposeFrame()
 {
 	field.Draw (gfx);
+
+	if(field.GameIsWon ()) {
+		SpriteCodex::DrawSmiley ({ 400, 156 }, gfx);
+	}
 }
