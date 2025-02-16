@@ -108,7 +108,7 @@ MineField::MineField (const Vei2& center, int n_mines)
 }
 
 void MineField::Draw (Graphics& gfx) const { 
-	gfx.DrawRect (GetRect (), SpriteCodex::baseColor);
+	gfx.DrawRect (GetRect ().GetExpanded(border_width), SpriteCodex::baseColor);
 	for(Vei2 grid_pos = { 0, 0 }; grid_pos.y < height; ++grid_pos.y) {
 		for(grid_pos.x = 0; grid_pos.x < width; ++grid_pos.x) {
 			TileAt (grid_pos).Draw(top_left + grid_pos * SpriteCodex::tileSize, gfx, game_over);
