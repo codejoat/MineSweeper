@@ -26,7 +26,7 @@ Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
 	gfx( wnd ),
-	field(gfx.GetRect().GetCenter(), 20 )
+	field(gfx.GetRect().GetCenter(), 2 )
 {
 }
 
@@ -42,25 +42,28 @@ void Game::UpdateModel()
 {
 	while(!wnd.mouse.IsEmpty ()) {
 		const auto event = wnd.mouse.Read ();
-		if(event.GetType () == Mouse::Event::Type::LPress) {
-			const Vei2 mouse_pos = event.GetPos();
-			if(field.GetRect ().Contains (mouse_pos)) {
-				field.OnRevealClick (mouse_pos);
-			}
-		} else if(event.GetType () == Mouse::Event::Type::RPress) {
-			const Vei2 mouse_pos = event.GetPos ();
-			if(field.GetRect ().Contains (mouse_pos)) {
-				field.OnFlagClick (mouse_pos);
+		if(field.GetState () == MineField::State::play) {
+			if(event.GetType () == Mouse::Event::Type::LPress) {
+				const Vei2 mouse_pos = event.GetPos ();
+				if(field.GetRect ().Contains (mouse_pos)) {
+					field.OnRevealClick (mouse_pos);
+				}
+			} else if(event.GetType () == Mouse::Event::Type::RPress) {
+				const Vei2 mouse_pos = event.GetPos ();
+				if(field.GetRect ().Contains (mouse_pos)) {
+					field.OnFlagClick (mouse_pos);
+				}
 			}
 		}
 	}
+	
 }
 
 void Game::ComposeFrame()
 {
 	field.Draw (gfx);
 
-	if(field.GameIsWon ()) {
+	if(field.GetState() == MineField::State::win) {
 		SpriteCodex::DrawSmiley ({ 400, 156 }, gfx);
 	}
 }

@@ -14,8 +14,8 @@ bool MineField::Tile::HasMine () const {
 	return has_mine;
 }
 
-void MineField::Tile::Draw (const Vei2& screen_pos, Graphics& gfx, bool game_over) const { 
-	if(!game_over) {
+void MineField::Tile::Draw (const Vei2& screen_pos, Graphics& gfx, MineField::State game_state) const {
+	if(game_state != MineField::State::lose) {
 		switch(state) {
 		case State::hidden:SpriteCodex::DrawTileButton (screen_pos, gfx); break;
 		case State::flagged:SpriteCodex::DrawTileButton (screen_pos, gfx);
@@ -111,7 +111,7 @@ void MineField::Draw (Graphics& gfx) const {
 	gfx.DrawRect (GetRect ().GetExpanded(border_width), SpriteCodex::baseColor);
 	for(Vei2 grid_pos = { 0, 0 }; grid_pos.y < height; ++grid_pos.y) {
 		for(grid_pos.x = 0; grid_pos.x < width; ++grid_pos.x) {
-			TileAt (grid_pos).Draw(top_left + grid_pos * SpriteCodex::tileSize, gfx, game_over);
+			TileAt (grid_pos).Draw(top_left + grid_pos * SpriteCodex::tileSize, gfx, state);
 		}
 	}
 }
@@ -121,21 +121,23 @@ RectI MineField::GetRect () const {
 }
 
 void MineField::OnRevealClick (const Vei2& screen_pos) {
-	if(!game_over) {
+	if(state == State::play) {
 		const Vei2 grid_pos = ScreenToGrid (screen_pos);
 		assert (grid_pos.x >= 0 && grid_pos.x < width && grid_pos.y >= 0 && grid_pos.y < height);
 		Tile& tile = TileAt (grid_pos);
 		if(!tile.IsRevealed () && !tile.IsFlagged ()) {
 			tile.Reveal ();
 			if(tile.HasMine ()) {
-				game_over = true;
+				state = State::lose;
+			} else if(GameIsWon()) {
+				state = State::win;
 			}
 		}
 	}
 }
 
 void MineField::OnFlagClick (const Vei2& screen_pos) { 
-	if(!game_over) {
+	if(state == State::play) {
 		const Vei2 grid_pos = ScreenToGrid (screen_pos);
 		assert (grid_pos.x >= 0 && grid_pos.x < width && grid_pos.y >= 0 && grid_pos.y < height);
 		Tile& tile = TileAt (grid_pos);
@@ -143,6 +145,10 @@ void MineField::OnFlagClick (const Vei2& screen_pos) {
 			tile.ToggleFlag ();
 		}
 	}
+}
+
+MineField::State MineField::GetState () const {
+	return state;
 }
 
 MineField::Tile& MineField::TileAt (const Vei2& grid_pos) {
@@ -181,8 +187,4 @@ bool MineField::GameIsWon () const {
 		}
 	}
 	return true;
-}
-
-bool MineField::GameIsLost () const {
-	return game_over;
 }
