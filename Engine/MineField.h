@@ -26,6 +26,7 @@ private:
 		bool IsRevealed () const;
 		void ToggleFlag ();
 		bool IsFlagged () const;
+		bool HasNoNeighborMines () const;
 		void SetNeighborMineCount (int mine_count);
 	private:
 		State state = State::hidden;
@@ -40,14 +41,15 @@ public:
 	void OnFlagClick (const Vei2& screen_pos);
 	State GetState () const;
 private:
+	void RevealTile (const Vei2& grid_pos);
 	Tile& TileAt (const Vei2& grid_pos);
 	const Tile& TileAt (const Vei2& grid_pos) const;
 	Vei2 ScreenToGrid (const Vei2& screen_pos);
 	int CountNeighborMines (const Vei2& grid_pos);
 	bool GameIsWon () const;
 private:
-	static constexpr int width = 5;
-	static constexpr int height = 10;
+	static constexpr int width = 8;
+	static constexpr int height = 8;
 	static constexpr int border_width = 30;
 	static constexpr Color border_color = Color (192, 192, 192);
 
